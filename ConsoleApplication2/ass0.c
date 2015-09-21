@@ -2,14 +2,11 @@
 Filename:			ass0.c
 Version:			1.0
 Author:				Victor Fernandes
-Student No.:		040772243
-Course Name/Number:	CST8219 - C++ Programming / CST8233 - Numerical Computing
 Lab Section:		302
 Assignment #:		0
 Assignment Name:	FleaBay
 Due Date:			September 23, 2015
 Submission Date:	
-Professor:			Andrew Tyler
 Purpose:			An Online Sales Management System (OSMS) that uses
 					dynamic memory allocation for its data. It lets the user
 					register with an ID and password, print a list of
