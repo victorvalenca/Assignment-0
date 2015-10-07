@@ -12,5 +12,6 @@ void Item::Report(){
 }
 
 Item::~Item(){
+	cout << "Inside Item Destructor" << endl;
 	delete[] description;
 }

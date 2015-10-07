@@ -6,7 +6,7 @@ using namespace std;
 
 FleaBay::FleaBay(){
 	numAccounts = 0;
-	accounts = new ppAccount(); // TODO: FIX THIS MEMORY ALLOCATION
+	accounts = new pAccount(); // TODO: FIX THIS MEMORY ALLOCATION
 }
 
 bool FleaBay::Login(){
@@ -28,6 +28,41 @@ bool FleaBay::Login(){
 		if (!AddNewAccount()){}
 		break;
 	case '2': //TODO: Account Management
+		if(!numAccounts){
+			cout << "There are no accounts." << endl;
+			break;
+		}
+
+		// Username prompt and validation
+		cout << "Please enter your account ID: ";
+		fflush(stdin);
+		cin >> login_buffer;
+		unsigned int i;
+		for(i = 0; i < numAccounts && !found;) {
+			if (strcmp(accounts[i]->ID, login_buffer) != 0) {
+				if (i == numAccounts) {
+					//Do nothing
+				} else {
+					i++;
+				}
+			} else {
+				found = true;
+			}
+		}
+
+		//Password Prompt
+		if (found) {
+			cout << "Please enter your password: ";
+			fflush(stdin);
+			cin >> passwd_buffer;
+			if (!strcmp(accounts[i]->PassWord, passwd_buffer)){
+				cout << "Account is valid." << endl;
+				accounts[i]->Report();
+			} else {
+				cout << "Password doesn't match this ID." << endl;
+				break;
+			}
+		}
 		break;
 	case '3': // Return to menu
 		break;
@@ -67,9 +102,9 @@ bool FleaBay::AddNewAccount(){
 		newEntry = new Account();
 
 		strcpy_s(newEntry->ID, strlen(login_buffer) + 1, login_buffer);
-		strcpy_s(newEntry->ID, strlen(passwd_buffer) + 1, passwd_buffer);
+		strcpy_s(newEntry->PassWord, strlen(passwd_buffer) + 1, passwd_buffer);
 
-		FleaBay::accounts[numAccounts++] = newEntry;
+		accounts[numAccounts++] = newEntry;
 
 		return true;
 	}
@@ -91,5 +126,9 @@ bool FleaBay::Report(){
 }
 
 FleaBay::~FleaBay(){
-	delete[] FleaBay::accounts;
+	cout << "Inside FleaBay Destructor" << endl;
+	for (int i = 0; i < numAccounts; i++){
+		delete[] accounts[i];
+	}
+	delete[] accounts;
 }

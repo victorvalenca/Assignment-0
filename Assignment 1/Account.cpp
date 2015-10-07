@@ -7,11 +7,11 @@ Account::Account(){
 	numItems = 0;
 	ID = new char[81];
 	PassWord = new char[81];
-	items = ppItem();
+	items = new pItem();
 }
 
 void Account::AddItem(){
-
+	
 }
 
 void Account::Report(){
@@ -33,7 +33,8 @@ void Account::Report(){
 }
 
 Account::~Account(){
-	delete[] Account::items;
-	delete[] Account::ID;
-	delete[] Account::PassWord;
+	cout << "Inside Account Destructor" << endl;
+	delete[] ID;
+	delete[] PassWord;
+	delete[] items;
 }
