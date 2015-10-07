@@ -100,9 +100,11 @@ bool FleaBay::AddNewAccount(){
 		cin >> passwd_buffer;
 
 		newEntry = new Account();
+		newEntry->ID = new char[strlen(login_buffer)+1];
+		newEntry->PassWord = new char[strlen(passwd_buffer)+1];
 
-		strcpy_s(newEntry->ID, strlen(login_buffer) + 1, login_buffer);
-		strcpy_s(newEntry->PassWord, strlen(passwd_buffer) + 1, passwd_buffer);
+		strcpy_s(newEntry->ID, strlen(login_buffer)+1, login_buffer);
+		strcpy_s(newEntry->PassWord, strlen(passwd_buffer)+1, passwd_buffer);
 
 		accounts[numAccounts++] = newEntry;
 

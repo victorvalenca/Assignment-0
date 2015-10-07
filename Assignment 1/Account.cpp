@@ -5,8 +5,8 @@ using namespace std;
 
 Account::Account(){
 	numItems = 0;
-	ID = new char[81];
-	PassWord = new char[81];
+	ID = nullptr;
+	PassWord = nullptr;
 	items = new pItem();
 }
 
