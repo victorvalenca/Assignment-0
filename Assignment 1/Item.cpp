@@ -3,7 +3,7 @@
 using namespace std;
 
 Item::Item(){
-	description = new char[160];
+	description = nullptr;
 	price = 0.0;
 }
 
@@ -13,5 +13,5 @@ void Item::Report(){
 
 Item::~Item(){
 	cout << "Inside Item Destructor" << endl;
-	delete[] description;
+	delete description;
 }

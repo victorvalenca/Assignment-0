@@ -4,9 +4,10 @@
 #include <iostream>
 using namespace std;
 
+
 FleaBay::FleaBay(){
 	numAccounts = 0;
-	accounts = new pAccount(); // TODO: FIX THIS MEMORY ALLOCATION
+	accounts = new pAccount[0];
 }
 
 bool FleaBay::Login(){
@@ -41,7 +42,7 @@ bool FleaBay::Login(){
 		for(i = 0; i < numAccounts && !found;) {
 			if (strcmp(accounts[i]->ID, login_buffer) != 0) {
 				if (i == numAccounts) {
-					//Do nothing
+					//Do nothing and move on
 				} else {
 					i++;
 				}
@@ -103,10 +104,19 @@ bool FleaBay::AddNewAccount(){
 		newEntry->ID = new char[strlen(login_buffer)+1];
 		newEntry->PassWord = new char[strlen(passwd_buffer)+1];
 
-		strcpy_s(newEntry->ID, strlen(login_buffer)+1, login_buffer);
-		strcpy_s(newEntry->PassWord, strlen(passwd_buffer)+1, passwd_buffer);
-
-		accounts[numAccounts++] = newEntry;
+		ppAccount newAccounts = new pAccount[numAccounts+1];
+		strcpy(newEntry->ID, login_buffer);
+		strcpy(newEntry->PassWord, passwd_buffer);
+		
+	
+		// Move account pointers into a new bigger array
+		//copy(accounts[0], accounts[numAccounts], newAccounts[0]);
+		for (unsigned int i = 0; i < numAccounts; i++) {
+			newAccounts[i] = accounts[i];
+		}
+		accounts = newAccounts;
+		accounts[numAccounts] = newEntry;
+		numAccounts++;
 
 		return true;
 	}
@@ -129,8 +139,8 @@ bool FleaBay::Report(){
 
 FleaBay::~FleaBay(){
 	cout << "Inside FleaBay Destructor" << endl;
-	for (int i = 0; i < numAccounts; i++){
-		delete[] accounts[i];
+	for (unsigned int i = numAccounts; i >= 0; i--) {
+		delete accounts[i];
 	}
-	delete[] accounts;
+	delete accounts;
 }
