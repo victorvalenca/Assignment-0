@@ -7,7 +7,7 @@ Account::Account(){
 	numItems = 0;
 	ID = nullptr;
 	PassWord = nullptr;
-	items = new pItem[0];
+	items = nullptr;
 }
 
 void Account::AddItem(){
@@ -25,15 +25,20 @@ void Account::AddItem(){
 	Item *newItem = new Item();
 	newItem->description = new char[strlen(desc_buffer)+1];
 	newItem->price = price_buffer;
+	strcpy(newItem->description, desc_buffer);
 
-	ppItem newItems = new pItem[numItems];
-	//copy(items[0], items[numItems], newItems[0]);
-	for (unsigned int i = 0; i < numItems; i++) {
-			newItems[i] = items[i];
-		}
-	items = newItems;
-	items[numItems] = newItem;
-	numItems++;
+	ppItem newItems = new pItem[numItems+1];
+
+	if (items == nullptr){
+		items = newItems;
+	} else {
+		for (unsigned int i = 0; i < numItems; i++) {
+				newItems[i] = items[i];
+			}
+		delete[] items;
+		items = newItems;
+	}
+	items[numItems++] = newItem;
 }
 
 void Account::Report(){
@@ -67,12 +72,12 @@ void Account::Report(){
 
 Account::~Account(){
 	cout << "Inside Account Destructor" << endl;
-	if (!numItems) {
+	if (numItems > 0) {
 		for (unsigned int i = 0; i < numItems; i++){
-			delete[] items[i];
+			delete items[i];
 		}
 	}
-	delete items;
+	delete[] items;
 	delete ID;
 	delete PassWord;
 }

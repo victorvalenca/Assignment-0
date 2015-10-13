@@ -7,7 +7,7 @@ using namespace std;
 
 FleaBay::FleaBay(){
 	numAccounts = 0;
-	accounts = new pAccount[0];
+	accounts = nullptr;
 }
 
 bool FleaBay::Login(){
@@ -77,17 +77,15 @@ bool FleaBay::Login(){
 
 bool FleaBay::AddNewAccount(){
 	Account *newEntry;
-	//ppAccount newAccounts;
 	char login_buffer[80] = {'\0'};
 	char passwd_buffer[80] = {'\0'};
 	bool check = true;
 
-	//TODO: ID Prompt
 	cout << "Please enter your account ID: " << endl;
 	fflush(stdin);
 	cin >> login_buffer;
 	for (unsigned int i = 0; i < FleaBay::numAccounts; i++){
-		if (!strcmp(FleaBay::accounts[i]->ID, login_buffer)){
+		if (!strcmp(accounts[i]->ID, login_buffer)){
 			cout << "Account already exists" << endl;
 			check = false;
 			break;
@@ -95,7 +93,6 @@ bool FleaBay::AddNewAccount(){
 	}
 
 	if (check){
-		//TODO: Password Prompt
 		cout << "Please enter your password: " << endl;
 		fflush(stdin);
 		cin >> passwd_buffer;
@@ -107,14 +104,17 @@ bool FleaBay::AddNewAccount(){
 		ppAccount newAccounts = new pAccount[numAccounts+1];
 		strcpy(newEntry->ID, login_buffer);
 		strcpy(newEntry->PassWord, passwd_buffer);
-		
-	
-		// Move account pointers into a new bigger array
-		//copy(accounts[0], accounts[numAccounts], newAccounts[0]);
-		for (unsigned int i = 0; i < numAccounts; i++) {
-			newAccounts[i] = accounts[i];
+		if (accounts == nullptr){
+			accounts = newAccounts;
 		}
-		accounts = newAccounts;
+		else {
+			for (unsigned int i = 0; i < numAccounts; i++) {
+				newAccounts[i] = accounts[i];
+			}
+			delete[] accounts;
+			accounts = newAccounts;
+		}
+
 		accounts[numAccounts] = newEntry;
 		numAccounts++;
 
@@ -139,8 +139,10 @@ bool FleaBay::Report(){
 
 FleaBay::~FleaBay(){
 	cout << "Inside FleaBay Destructor" << endl;
-	for (unsigned int i = numAccounts; i >= 0; i--) {
-		delete accounts[i];
+	if (numAccounts > 0){
+		for (unsigned int i = 0; i < numAccounts; i++) {
+			delete accounts[i];
+		}
 	}
-	delete accounts;
+	delete[] accounts;
 }
