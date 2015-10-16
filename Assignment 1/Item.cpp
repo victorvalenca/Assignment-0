@@ -8,10 +8,10 @@ Item::Item(){
 }
 
 void Item::Report(){
-	
+	cout << description;
+	cout << " , Cost: $" << price << endl;
 }
 
 Item::~Item(){
-	cout << "Inside Item Destructor" << endl;
 	delete description;
 }

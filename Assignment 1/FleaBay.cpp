@@ -37,7 +37,7 @@ bool FleaBay::Login(){
 		// Username prompt and validation
 		cout << "Please enter your account ID: ";
 		fflush(stdin);
-		cin >> login_buffer;
+		cin.getline(login_buffer,80);
 		unsigned int i;
 		for(i = 0; i < numAccounts && !found;) {
 			if (strcmp(accounts[i]->ID, login_buffer) != 0) {
@@ -55,10 +55,9 @@ bool FleaBay::Login(){
 		if (found) {
 			cout << "Please enter your password: ";
 			fflush(stdin);
-			cin >> passwd_buffer;
+			cin.getline(passwd_buffer,80);
 			if (!strcmp(accounts[i]->PassWord, passwd_buffer)){
-				cout << "Account is valid." << endl;
-				accounts[i]->Report();
+				accounts[i]->AddItem();
 			} else {
 				cout << "Password doesn't match this ID." << endl;
 				break;
@@ -83,7 +82,7 @@ bool FleaBay::AddNewAccount(){
 
 	cout << "Please enter your account ID: " << endl;
 	fflush(stdin);
-	cin >> login_buffer;
+	cin.getline(login_buffer,80);
 	for (unsigned int i = 0; i < FleaBay::numAccounts; i++){
 		if (!strcmp(accounts[i]->ID, login_buffer)){
 			cout << "Account already exists" << endl;
@@ -95,7 +94,7 @@ bool FleaBay::AddNewAccount(){
 	if (check){
 		cout << "Please enter your password: " << endl;
 		fflush(stdin);
-		cin >> passwd_buffer;
+		cin.getline(passwd_buffer,80);
 
 		newEntry = new Account();
 		newEntry->ID = new char[strlen(login_buffer)+1];
@@ -125,12 +124,13 @@ bool FleaBay::AddNewAccount(){
 }
 
 bool FleaBay::Report(){
-	if (numAccounts != 0){
+	if (numAccounts) {
 		for (unsigned int i = 0; i < numAccounts; i++){
 			cout << "Account ID: " << accounts[i]->ID << endl;
+			accounts[i]->Report();
 		}
 		return true;
-	} 
+	}
 	else {
 		cout << "** NO ACCOUNTS **" << endl;
 		return true;
@@ -138,7 +138,6 @@ bool FleaBay::Report(){
 }
 
 FleaBay::~FleaBay(){
-	cout << "Inside FleaBay Destructor" << endl;
 	if (numAccounts > 0){
 		for (unsigned int i = 0; i < numAccounts; i++) {
 			delete accounts[i];
